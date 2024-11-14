@@ -9,10 +9,11 @@ import Register from './pages/Register';
 import CreateCommunity from './pages/CreateCommunity'
 import CreateEvent from './pages/CreateEvent';
 import Settings from './pages/Settings';
-
+import { SocketProvider } from './context/SocketContext';
 function App() {
   return (
     <AuthProvider>
+    <SocketProvider>
       
     <Router>
       
@@ -29,7 +30,7 @@ function App() {
         </Routes>
       
     </Router>
-    
+    </SocketProvider>
     </AuthProvider>
   );
 }

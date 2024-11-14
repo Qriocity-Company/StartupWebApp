@@ -16,7 +16,7 @@ const upload = multer({ storage });
 
 // Create a post
 router.post('/', upload.single('image'), async (req, res) => {
-  const { title, description,tags } = req.body;
+  const { title, description, tags } = req.body;
   const parsedTags = JSON.parse(tags);
   const newPost = new Post({
     title,
@@ -24,10 +24,19 @@ router.post('/', upload.single('image'), async (req, res) => {
     image: req.file.path,
     tags: parsedTags,
   });
+
   try {
     const savedPost = await newPost.save();
+
+    
+      
+    req.io.emit('newNotif', { message: "New post created!" }); 
+      console.log('New post notification sent on backend');
+    
+
     res.status(200).json(savedPost);
   } catch (err) {
+    console.error('Error creating post:', err);  // Log the error for better debugging
     res.status(500).json(err);
   }
 });
