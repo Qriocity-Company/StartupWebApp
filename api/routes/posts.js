@@ -14,6 +14,19 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+//Comment on a post
+router.post("/:id/comments", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    post.comments.push(req.body.comment);
+    await post.save();
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(500).json({ message: "Error adding comment" });
+  }
+});
+
+
 // Create a post
 router.post('/', upload.single('image'), async (req, res) => {
   const { title, description, tags } = req.body;
